@@ -1,0 +1,87 @@
+{
+  "name": "@threepipe/webgi-plugins",
+  "version": "0.5.6",
+  "description": "WebGi - Realistic Rendering Plugins for ThreePipe.",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "sources": "src/index.ts",
+  "browser": "dist/index.js",
+  "type": "module",
+  "files": [
+    "LICENSE",
+    "NOTICE",
+    "README.md",
+    "dist",
+    "tsconfig.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/repalash/threepipe-webgi.git"
+  },
+  "keywords": [
+    "3d",
+    "three.js",
+    "typescript",
+    "javascipt",
+    "browser",
+    "esm",
+    "rendering",
+    "viewer",
+    "webgl",
+    "webgi",
+    "canvas"
+  ],
+  "scripts": {
+    "new:pack": "npm run prepare 1>&2 && clean-package && npm pack --silent && clean-package restore",
+    "new:publish": "git diff --exit-code --name-only HEAD * && PKG=$(npm run -s new:pack) && npm publish --access public \"$PKG\" && git tag $npm_package_name-$npm_package_version",
+    "prepare": "npm run build",
+    "build": "rimraf dist && vite build",
+    "dev": "NODE_ENV=development vite build --watch"
+  },
+  "author": "repalash <palash@shaders.app> (https://repalash.com)",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/repalash/threepipe-webgi/issues"
+  },
+  "homepage": "https://github.com/repalash/threepipe-webgi#readme",
+  "dependencies": {
+    "rand-seed": "^3.0.0",
+    "threepipe": "file:./../../src/"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./dist/": {
+      "import": "./dist/",
+      "require": "./dist/"
+    }
+  },
+  "browserslist": [
+    "defaults"
+  ],
+  "sideEffects": false,
+  "overrides": {
+    "threepipe": "$threepipe",
+    "stylus": "0.0.1-security"
+  },
+  "clean-package": {
+    "remove": [
+      "clean-package",
+      "scripts",
+      "devDependencies",
+      "overrides",
+      "//"
+    ],
+    "replace": {
+      "dependencies": {},
+      "peerDependencies": {
+        "threepipe": "^0.0.62",
+        "uiconfig-tweakpane": "^0.1.0"
+      }
+    }
+  }
+}

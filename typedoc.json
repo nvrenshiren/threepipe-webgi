@@ -1,0 +1,21 @@
+{
+  "externalSymbolLinkMappings": {
+    "@types/three": {
+      "*": "https://threejs.org/docs"
+    },
+    "entryPoints": [
+        "src/index.ts"
+    ],
+    "name": "ThreePipe",
+    "excludeExternals": true,
+    "readme": "none",
+    "sourceLinkExternal": true,
+    "categorizeByGroup": false,
+    "categoryOrder": [
+        "Viewer", "Plugins", "Asset Manager", "*", "Others"
+    ],
+    "externalPattern": [
+        "**/node_modules/**",
+        "**/three-ts-types/**"
+    ]
+}

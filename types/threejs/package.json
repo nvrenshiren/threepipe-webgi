@@ -1,0 +1,36 @@
+{
+  "private": true,
+  "name": "@types/three",
+  "version": "0.160.1003",
+  "projects": [
+    "https://threejs.org/"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./build/three.module.js",
+      "require": "./build/three.cjs"
+    },
+    "./examples/fonts/*": "./examples/fonts/*",
+    "./examples/jsm/*": "./examples/jsm/*",
+    "./addons": "./examples/jsm/Addons.js",
+    "./addons/*": "./examples/jsm/*",
+    "./src/*": "./src/*",
+    "./nodes": "./examples/jsm/nodes/Nodes.js"
+  },
+  "dependencies": {
+    "@types/stats.js": "*",
+    "@types/webxr": "*",
+    "meshoptimizer": "~0.18.1"
+  },
+  "owners": [
+    {
+      "name": "Josh Ellis",
+      "githubUsername": "joshuaellis"
+    },
+    {
+      "name": "Nathan Bierema",
+      "githubUsername": "Methuselah96"
+    }
+  ]
+}

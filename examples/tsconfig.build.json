@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "threepipe": ["../dist/"],
+      "@threepipe/plugin-*": ["../plugins/*/dist"],
+      "@threepipe/plugins-*": ["../plugins/*/dist"],
+      "@threepipe/*-plugins": ["../plugins/*/dist"]
+    }
+  }
+}
