@@ -1,5 +1,7 @@
 # ThreePipe
 
+基于[ThreePipe](https://threepipe.org/)做了一些修改,threejs 使用本地,并且将[WebGi](https://webgi.dev/)做了本地化,如果将该项目商用,注意相关的[WebGi](https://webgi.dev/)的 LICENSE
+
 A new way to work with three.js, 3D models and rendering on the web.
 
 [ThreePipe](https://threepipe.org/) &mdash;
@@ -15,6 +17,7 @@ A new way to work with three.js, 3D models and rendering on the web.
 ThreePipe is a modern 3D framework built on top of [three.js](https://threejs.org/), written in TypeScript, designed to make creating high-quality, modular, and extensible 3D experiences on the web simple and enjoyable.
 
 Key features include:
+
 - Simple, intuitive API for creating 3D model viewers/configurators/editors on web pages, with many built-in presets for common workflows and use-cases.
 - Companion [editor](https://threepipe.org/examples/tweakpane-editor/) to create, edit and configure 3D scenes in the browser.
 - Modular architecture that allows you to easily extend the viewer, scene objects, materials, shaders, rendering, post-processing and serialization with custom functionality.
@@ -49,7 +52,7 @@ Checkout the full [Getting Started Guide](https://threepipe.org/guide/getting-st
 
 To create a new project locally
 
-```npm create threepipe@latest```
+`npm create threepipe@latest`
 
 And follow the instructions to create a new project.
 
@@ -72,28 +75,28 @@ Get started with pre-ready templates with model viewer and plugins that run loca
 ### HTML/JS Quickstart (CDN)
 
 ```html
-
 <canvas id="three-canvas" style="width: 800px; height: 600px;"></canvas>
 <script type="module">
-  import {ThreeViewer, DepthBufferPlugin} from 'https://unpkg.com/threepipe@latest/dist/index.mjs'
+  import { ThreeViewer, DepthBufferPlugin } from "https://unpkg.com/threepipe@latest/dist/index.mjs"
 
-  const viewer = new ThreeViewer({canvas: document.getElementById('three-canvas')})
+  const viewer = new ThreeViewer({ canvas: document.getElementById("three-canvas") })
 
-  // Add some plugins 
+  // Add some plugins
   viewer.addPluginSync(new DepthBufferPlugin())
-  
+
   // Load an environment map
-  const envPromise = viewer.setEnvironmentMap('https://samples.threepipe.org/minimal/venice_sunset_1k.hdr')
-  const modelPromise = viewer.load('https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf', {
+  const envPromise = viewer.setEnvironmentMap("https://samples.threepipe.org/minimal/venice_sunset_1k.hdr")
+  const modelPromise = viewer.load("https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf", {
     autoCenter: true,
-    autoScale: true,
+    autoScale: true
   })
 
   Promise.all([envPromise, modelPromise]).then(([env, model]) => {
-    console.log('Loaded', model, env, viewer)
+    console.log("Loaded", model, env, viewer)
   })
 </script>
 ```
+
 Check it in action: https://threepipe.org/examples/#html-js-sample/
 
 Check out the details about the [ThreeViewer API](https://threepipe.org/guide/viewer-api.html) and more [plugins](https://threepipe.org/guide/core-plugins.html).
@@ -105,25 +108,23 @@ The best way to use the viewer in react is to wrap it in a custom component.
 Here is a sample [react](https://react.dev) component in tsx to render a model with an environment map.
 
 ```tsx
-import React from 'react'
-function ThreeViewerComponent({src, env}: {src: string, env: string}) {
+import React from "react"
+function ThreeViewerComponent({ src, env }: { src: string; env: string }) {
   const canvasRef = React.useRef(null)
   React.useEffect(() => {
-    const viewer = new ThreeViewer({canvas: canvasRef.current})
+    const viewer = new ThreeViewer({ canvas: canvasRef.current })
 
     const envPromise = viewer.setEnvironmentMap(env)
     const modelPromise = viewer.load(src)
     Promise.all([envPromise, modelPromise]).then(([env, model]) => {
-      console.log('Loaded', model, env, viewer)
+      console.log("Loaded", model, env, viewer)
     })
-    
+
     return () => {
       viewer.dispose()
     }
   }, [])
-  return (
-     <canvas id="three-canvas" style={{width: 800, height: 600}} ref={canvasRef} />
-  )
+  return <canvas id="three-canvas" style={{ width: 800, height: 600 }} ref={canvasRef} />
 }
 ```
 
@@ -142,45 +143,42 @@ npm install @threepipe/plugin-r3f
 Here is a sample [React Three Fiber](https://r3f.docs.pmnd.rs/) component to render a model with an environment map using declarative JSX syntax.
 
 ```tsx
-import React from 'react'
-import { createRoot } from 'react-dom/client'
-import { ViewerCanvas, Asset, Model } from '@threepipe/plugin-r3f'
-import { LoadingScreenPlugin } from 'threepipe'
+import React from "react"
+import { createRoot } from "react-dom/client"
+import { ViewerCanvas, Asset, Model } from "@threepipe/plugin-r3f"
+import { LoadingScreenPlugin } from "threepipe"
 
 function App() {
   return (
     <ViewerCanvas
       id="three-canvas"
-      style={{width: 800, height: 600}}
+      style={{ width: 800, height: 600 }}
       plugins={[LoadingScreenPlugin]}
-      onMount={async (viewer) => {
-        console.log('Viewer mounted:', viewer)
+      onMount={async viewer => {
+        console.log("Viewer mounted:", viewer)
       }}
     >
-      <React.Suspense fallback={<mesh>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="orange" />
-      </mesh>}>
-        <Asset 
-          url="https://samples.threepipe.org/minimal/venice_sunset_1k.hdr"
-          autoSetBackground={true}
-        />
-        <Asset 
-          url="https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf"
-          autoCenter={true}
-          autoScale={true}
-        />
+      <React.Suspense
+        fallback={
+          <mesh>
+            <boxGeometry args={[1, 1, 1]} />
+            <meshStandardMaterial color="orange" />
+          </mesh>
+        }
+      >
+        <Asset url="https://samples.threepipe.org/minimal/venice_sunset_1k.hdr" autoSetBackground={true} />
+        <Asset url="https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf" autoCenter={true} autoScale={true} />
       </React.Suspense>
     </ViewerCanvas>
   )
 }
 
-createRoot(document.getElementById('root')).render(<App />)
+createRoot(document.getElementById("root")).render(<App />)
 ```
 
 `ViewerCanvas` is the wrapper around the r3f `Canvas` component that initializes the ThreePipe viewer and provides the viewer context to all child components.
 
-Any children added to this component are added to the scene model root. 
+Any children added to this component are added to the scene model root.
 
 Check it in action: https://threepipe.org/examples/#r3f-tsx-sample/
 
@@ -191,35 +189,47 @@ The best way to use the viewer in nextjs is to wrap it in a custom component.
 Here is a sample client side [react](https://react.dev) component with [nextjs](https://nextjs.org) in tsx to render a model with an environment map.
 
 ```tsx
-'use client'
-import React from 'react'
-import type {ThreeViewer} from 'threepipe/dist';
+"use client"
+import React from "react"
+import type { ThreeViewer } from "threepipe/dist"
 
-export default function ThreeViewerComponent({src, env}: {src: string, env: string}) {
+export default function ThreeViewerComponent({ src, env }: { src: string; env: string }) {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null)
 
   React.useEffect(() => {
     if (!canvasRef.current) return
-    let viewer: ThreeViewer;
-    (async () => {
-      const { ThreeViewer } = await import('threepipe/dist')
+    let viewer: ThreeViewer
+    ;(async () => {
+      const { ThreeViewer } = await import("threepipe/dist")
       viewer = new ThreeViewer({ canvas: canvasRef.current!, tonemap: false, rgbm: false, msaa: true })
       viewer.scene.backgroundColor = null
 
       const envPromise = viewer.setEnvironmentMap(env)
-      const modelPromise = viewer.load(src, {autoScale: true, autoCenter: true})
+      const modelPromise = viewer.load(src, { autoScale: true, autoCenter: true })
 
       Promise.all([envPromise, modelPromise]).then(([envMap, model]) => {
-        console.log('Loaded', model, envMap, viewer)
+        console.log("Loaded", model, envMap, viewer)
       })
     })()
-    return () => {if (viewer) viewer.dispose()}
+    return () => {
+      if (viewer) viewer.dispose()
+    }
   }, [src, env])
 
-  return <canvas id="three-canvas" style={{
-    width: 800, height: 600,
-    position: 'absolute', transform: 'translate(-50%, -50%)', top: '50%', left: '50%',
-  }} ref={canvasRef}/>
+  return (
+    <canvas
+      id="three-canvas"
+      style={{
+        width: 800,
+        height: 600,
+        position: "absolute",
+        transform: "translate(-50%, -50%)",
+        top: "50%",
+        left: "50%"
+      }}
+      ref={canvasRef}
+    />
+  )
 }
 ```
 
@@ -239,26 +249,26 @@ A sample [vue.js](https://vuejs.org/) component in js to render a model with an 
 ```js
 const ThreeViewerComponent = {
   setup() {
-    const canvasRef = ref(null);
+    const canvasRef = ref(null)
 
     onMounted(() => {
-      const viewer = new ThreeViewer({ canvas: canvasRef.value });
+      const viewer = new ThreeViewer({ canvas: canvasRef.value })
 
-      const envPromise = viewer.setEnvironmentMap('https://samples.threepipe.org/minimal/venice_sunset_1k.hdr');
-      const modelPromise = viewer.load('https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf');
+      const envPromise = viewer.setEnvironmentMap("https://samples.threepipe.org/minimal/venice_sunset_1k.hdr")
+      const modelPromise = viewer.load("https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf")
 
       Promise.all([envPromise, modelPromise]).then(([env, model]) => {
-        console.log('Loaded', model, env, viewer)
+        console.log("Loaded", model, env, viewer)
       })
 
       onBeforeUnmount(() => {
-        viewer.dispose();
-      });
-    });
+        viewer.dispose()
+      })
+    })
 
-    return { canvasRef };
-  },
-};
+    return { canvasRef }
+  }
+}
 ```
 
 Check it in action: https://threepipe.org/examples/#vue-html-sample/
@@ -271,32 +281,33 @@ A sample [svelte](https://svelte.dev/) component in js to render a model with an
 
 ```html
 <script>
-    import {onDestroy, onMount} from 'svelte';
-    import {ThreeViewer} from 'threepipe'; 
+  import { onDestroy, onMount } from "svelte"
+  import { ThreeViewer } from "threepipe"
 
-    let canvasRef;
-    let viewer;
-    onMount(() => {
-        viewer = new ThreeViewer({canvas: canvasRef});
+  let canvasRef
+  let viewer
+  onMount(() => {
+    viewer = new ThreeViewer({ canvas: canvasRef })
 
-        const envPromise = viewer.setEnvironmentMap('https://samples.threepipe.org/minimal/venice_sunset_1k.hdr');
-        const modelPromise = viewer.load('https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf');
+    const envPromise = viewer.setEnvironmentMap("https://samples.threepipe.org/minimal/venice_sunset_1k.hdr")
+    const modelPromise = viewer.load("https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf")
 
-        Promise.all([envPromise, modelPromise]).then(([env, model]) => {
-          console.log('Loaded', model, env, viewer)
-        })
-    });
-    onDestroy(() => viewer.dispose())
+    Promise.all([envPromise, modelPromise]).then(([env, model]) => {
+      console.log("Loaded", model, env, viewer)
+    })
+  })
+  onDestroy(() => viewer.dispose())
 </script>
 
-<canvas bind:this={canvasRef} id="three-canvas" style="width: 800px; height: 600px"></canvas>
+<canvas bind:this="{canvasRef}" id="three-canvas" style="width: 800px; height: 600px"></canvas>
 ```
 
 Check it in action: https://threepipe.org/examples/#svelte-sample/
 
 For Svelte 5, simply initialize `canvasRef` to `$state()` -
+
 ```js
-let canvasRef = $state();
+let canvasRef = $state()
 ```
 
 ### NPM/YARN
@@ -310,6 +321,7 @@ npm install threepipe
 ### Loading a 3D Model
 
 First, create a canvas element in your HTML page:
+
 ```html
 <canvas id="three-canvas" style="width: 800px; height: 600px;"></canvas>
 ```
@@ -317,18 +329,18 @@ First, create a canvas element in your HTML page:
 Then, import the viewer and create a new instance:
 
 ```typescript
-import {ThreeViewer, IObject3D} from 'threepipe'
+import { ThreeViewer, IObject3D } from "threepipe"
 
 // Create a viewer
-const viewer = new ThreeViewer({canvas: document.getElementById('three-canvas') as HTMLCanvasElement})
+const viewer = new ThreeViewer({ canvas: document.getElementById("three-canvas") as HTMLCanvasElement })
 
 // Load an environment map
-await viewer.setEnvironmentMap('https://samples.threepipe.org/minimal/venice_sunset_1k.hdr')
+await viewer.setEnvironmentMap("https://samples.threepipe.org/minimal/venice_sunset_1k.hdr")
 
 // Load a model
-const result = await viewer.load<IObject3D>('https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf', {
-    autoCenter: true,
-    autoScale: true,
+const result = await viewer.load<IObject3D>("https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf", {
+  autoCenter: true,
+  autoScale: true
 })
 ```
 
@@ -343,12 +355,14 @@ Check out the glTF Load example to see it in action or to check the JS equivalen
 Check out the [Plugins](https://threepipe.org/guide/features.html#plugin-system) section to learn how to add additional functionality to the viewer.
 
 ## License
+
 The core framework([src](https://github.com/repalash/threepipe/tree/master/src), [dist](https://github.com/repalash/threepipe/tree/master/dist), [examples](https://github.com/repalash/threepipe/tree/master/examples) folders) and any [plugins](https://github.com/repalash/threepipe/tree/master/plugins) without a separate license are under the Free [Apache 2.0 license](https://github.com/repalash/threepipe/tree/master/LICENSE).
 
 Some plugins(in the [plugins](https://github.com/repalash/threepipe/tree/master/plugins) folder) might have different licenses. Check the individual plugin documentation and the source folder/files for more details.
 
 ## Status
-The project is in `beta` stage and under active development. 
+
+The project is in `beta` stage and under active development.
 Many features will be added but the core API will not change significantly in future releases.
 
 ## Table of Contents
@@ -414,9 +428,9 @@ Many features will be added but the core API will not change significantly in fu
   - [RenderTargetPreviewPlugin](https://threepipe.org/plugin/RenderTargetPreviewPlugin.html) - Preview any render target in a UI panel over the canvas
   - [GeometryUVPreviewPlugin](https://threepipe.org/plugin/GeometryUVPreviewPlugin.html) - Preview UVs of any geometry in a UI panel over the canvas
   - [FrameFadePlugin](https://threepipe.org/plugin/FrameFadePlugin.html) - Post-render pass to smoothly fade to a new rendered frame over time
-  - [VignettePlugin](https://threepipe.org/plugin/VignettePlugin.html) - Add Vignette effect  by patching the final screen pass
-  - [ChromaticAberrationPlugin](https://threepipe.org/plugin/ChromaticAberrationPlugin.html) - Add [Chromatic Aberration](https://en.wikipedia.org/wiki/Chromatic_aberration) effect  by patching the final screen pass
-  - [FilmicGrainPlugin](https://threepipe.org/plugin/FilmicGrainPlugin.html) - Add [Filmic Grain](https://en.wikipedia.org/wiki/Film_grain) effect  by patching the final screen pass
+  - [VignettePlugin](https://threepipe.org/plugin/VignettePlugin.html) - Add Vignette effect by patching the final screen pass
+  - [ChromaticAberrationPlugin](https://threepipe.org/plugin/ChromaticAberrationPlugin.html) - Add [Chromatic Aberration](https://en.wikipedia.org/wiki/Chromatic_aberration) effect by patching the final screen pass
+  - [FilmicGrainPlugin](https://threepipe.org/plugin/FilmicGrainPlugin.html) - Add [Filmic Grain](https://en.wikipedia.org/wiki/Film_grain) effect by patching the final screen pass
   - [NoiseBumpMaterialPlugin](https://threepipe.org/plugin/NoiseBumpMaterialPlugin.html) - Sparkle Bump/Noise Bump material extension for PhysicalMaterial
   - [CustomBumpMapPlugin](https://threepipe.org/plugin/CustomBumpMapPlugin.html) - Adds multiple bump map support and bicubic filtering material extension for PhysicalMaterial
   - [ClearcoatTintPlugin](https://threepipe.org/plugin/ClearcoatTintPlugin.html) - Clearcoat Tint material extension for PhysicalMaterial
@@ -433,7 +447,7 @@ Many features will be added but the core API will not change significantly in fu
   - [GLTFKHRMaterialVariantsPlugin](https://threepipe.org/plugin/GLTFKHRMaterialVariantsPlugin.html) - Support using for variants from KHR_materials_variants extension in glTF models.
   - [Rhino3dmLoadPlugin](https://threepipe.org/plugin/Rhino3dmLoadPlugin.html) - Add support for loading .3dm files ([Rhino 3D](https://www.rhino3d.com/))
   - [PLYLoadPlugin](https://threepipe.org/plugin/PLYLoadPlugin.html) - Add support for loading .ply files
-  - [STLLoadPlugin](https://threepipe.org/plugin/STLLoadPlugin.html) - Add support for loading .stl files ([STL](https://en.wikipedia.org/wiki/STL_(file_format)))
+  - [STLLoadPlugin](https://threepipe.org/plugin/STLLoadPlugin.html) - Add support for loading .stl files ([STL](<https://en.wikipedia.org/wiki/STL_(file_format)>))
   - [KTX2LoadPlugin](https://threepipe.org/plugin/KTX2LoadPlugin.html) - Add support for loading .ktx2 files ([KTX2 - GPU Compressed Textures](https://doc.babylonjs.com/features/featuresDeepDive/materials/using/ktx2Compression))
   - [KTXLoadPlugin](https://threepipe.org/plugin/KTXLoadPlugin.html) - Add support for loading .ktx files (Note - use ktx2)
   - [USDZLoadPlugin](https://threepipe.org/plugin/USDZLoadPlugin.html) - Add partial support for loading .usdz, .usda files ([USDZ](https://en.wikipedia.org/wiki/Universal_Scene_Description))
@@ -467,4 +481,5 @@ Many features will be added but the core API will not change significantly in fu
 Check the list of all functions, classes and types in the [API Reference Docs](https://threepipe.org/docs/).
 
 ## Contributing
+
 Contributions to ThreePipe are welcome and encouraged! Feel free to open issues and pull requests on the GitHub repository.
